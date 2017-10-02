@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from django.http import HttpResponse
+from django import forms
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from app.forms import *
+
+def Note(request):
+    if request.method == "POST":
+        form = Note_Form(request.POST)
+        if form.is_valid():
+            model_instance = form.save(commit=False)
+            model_instance.timestamp = timezone.now()
+            model_instance.save()
+            return redirect('/admin')
+    else:
+        return render(request, "app/my_template.html", {'form': Note_Form()})
+ 
